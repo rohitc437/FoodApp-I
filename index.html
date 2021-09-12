@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Food App</title>
+  </head>
+  <body>
+    <div id="place">
+      <div id="navbar">
+        <h3><a href="index.html">Home</a></h3>
+
+        <input type="text" placeholder="Search" id="query" />
+        <button onclick="getData()">Submit</button>
+
+        <div id="options">
+          <h3><a href="latestRecipe.html">Latest Recipe</a></h3>
+          <h3><a href="recipeOfTheDay.html">Recipe Of The Day</a></h3>
+        </div>
+      </div>
+    </div>
+    <div id="data1"></div>
+  </body>
+</html>
+<script type="text/javascript">
+    async function getData() {
+
+        let mydiv = document.getElementById("data1");
+      let recipeName = document.getElementById("query").value;
+        mydiv.innerHTML = null;
+        try{
+      
+      let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`);
+
+      let data = await res.json();
+
+      data.meals.forEach(({ strMealThumb, strMeal, strCategory, strArea }) => {
+
+        let div = document.createElement("div");
+        div.id = "innerDiv";
+
+        let div2 = document.createElement("div");
+        div2.id = "mainCont2";
+
+        let img = document.createElement("img");
+        img.src = strMealThumb
+
+        let p = document.createElement("p");
+        p.innerHTML = `<span>Receipe Name: </span>${strMeal}`
+
+        let p2 = document.createElement("p");
+        p2.innerHTML = `<span>Receipe Category: </span>${strCategory}`
+
+        let p3 = document.createElement("p");
+        p3.innerHTML = `<span>Receipe Area: </span>${strArea}`
+
+
+        div2.append(p, p2, p3);
+        div.append(img, div2);
+        mydiv.append(div);
+
+
+        document.getElementById("query").value = null
+
+        });
+
+        } catch (err) {
+        console.log('err:', err)
+        }
+
+
+
+
+
+
+
+
+    }
+</script>
